@@ -1,0 +1,8 @@
+.direnv/
+.envrc
+.DS_Store
+bin/
+
+# Output of the go coverage tool
+coverage.out
+coverage.html
