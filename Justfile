@@ -7,6 +7,11 @@ coverage_html := "coverage.html"
 default:
     @just --list
 
+# Spawn a nix development shell
+shell:
+    @echo "Spawning a nix development shell..."
+    nix develop --command $SHELL
+
 # Run the application
 run:
     go run {{main_package}}
@@ -14,7 +19,7 @@ run:
 # Run with hot reload using gow
 dev:
     @echo "Running with hot reload..."
-    @command -v gow >/dev/null 2>&1 || { echo "❌ gow not installed. Run 'just install-tools'"; exit 1; }
+    @command -v gow >/dev/null 2>&1 || { echo "❌ gow not installed. Run 'just deps-tooling'"; exit 1; }
     gow run {{main_package}}
 
 # Build the application
@@ -121,3 +126,24 @@ deps-up:
     @echo "Updating dependencies..."
     go get -u ./...
     go mod tidy
+
+# Install Go tooling (for non-Nix users)
+deps-tooling:
+    @echo "Installing Go development tools..."
+    @echo "→ Installing gopls..."
+    go install golang.org/x/tools/gopls@latest
+    @echo "→ Installing gofumpt..."
+    go install mvdan.cc/gofumpt@latest
+    @echo "→ Installing goimports-reviser..."
+    go install github.com/incu6us/goimports-reviser/v3@latest
+    @echo "→ Installing golines..."
+    go install github.com/segmentio/golines@latest
+    @echo "→ Installing golangci-lint..."
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+    @echo "→ Installing govulncheck..."
+    go install golang.org/x/vuln/cmd/govulncheck@latest
+    @echo "→ Installing gow..."
+    go install github.com/mitranim/gow@latest
+    @echo "✓ All tools installed to $(go env GOPATH)/bin"
+    @echo ""
+    @echo "Make sure $(go env GOPATH)/bin is in your PATH"

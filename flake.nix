@@ -18,7 +18,6 @@
             pkgs.goimports-reviser
             pkgs.golines
             pkgs.golangci-lint
-            pkgs.air
             pkgs.govulncheck
             pkgs.gow
 
